@@ -9,24 +9,37 @@ oled_rotation_t oled_init_user(oled_rotation_t rotation) {
 }
 
 void render_layer_state(void) {
+  switch (get_highest_layer(layer_state)) {
+    case _QWERT:
+      oled_write_P(PSTR("TYPE "), false);
+      break;
+    case _GAMING:
+      oled_write_P(PSTR("GAME "), false);
+      break;
+  }
+
   oled_write_P(PSTR("LAYER"), false);
-    switch (layer_state) {
-      case L_BASE:
-        oled_write_ln_P(PSTR("QWERT"), false);
-        break;
-      case L_LOWER:
-        oled_write_ln_P(PSTR("LOWER"), false);
-        break;
-      case L_RAISE:
-        oled_write_ln_P(PSTR("RAISE"), false);
-        break;
-      case L_ADJUST:
-      case L_ADJUST|L_LOWER:
-      case L_ADJUST|L_RAISE:
-      case L_ADJUST|L_LOWER|L_RAISE:
-        oled_write_ln_P(PSTR("ADJUS"), false);
-        break;
-    }
+
+  switch (get_highest_layer(layer_state)) {
+    case 0:
+      oled_write_P(PSTR("     "), false);
+      break;
+    case _SYM:
+      oled_write_P(PSTR("SYMBL"), false);
+      break;
+    case _ADJUS:
+      oled_write_P(PSTR("ADJUS"), false);
+      break;
+    case _NUM_UTIL:
+      oled_write_P(PSTR("NUM  "), false);
+      break;
+    case _GAMING_EXT:
+      oled_write_P(PSTR("EXT  "), false);
+      break;
+    default:
+      oled_write_P(PSTR("UNKN "), false);
+      break;
+  }
 }
 
 void render_status_main(void) {
